@@ -1,5 +1,5 @@
 
-system "wordpress" do
+system "blog" do
   
   server "wordpress", {
     base: "apache-server",
