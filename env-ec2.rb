@@ -18,12 +18,13 @@ environment "ec2" do
 
   base "apache-server", {
     inherit: "server",
-    init: ["apt:apache2-mpm-prefork libapache2-mod-php5 php5-mysql",
+    init: ["apt:apache2-mpm-prefork libapache2-mod-php5 php5-mysql emacs23-nox",
            "exec:sudo /etc/init.d/apache2 restart"]
   }
 
   base "mysql", {
     provisioner: [ "rds", {
+                     :name => 'template1',
                      :storage_size => 5,
                      :instance_class => "db.m1.small",
                      :engine => "MySQL",

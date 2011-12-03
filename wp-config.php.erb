@@ -1,8 +1,3 @@
-<%
-  require 'json'
-  db = JSON.parse($deployment.space.find("wordpress-db").value)
-%>
-
 <?php
 /**
  * The base configurations of the WordPress.
@@ -19,18 +14,33 @@
  * @package WordPress
  */
 
+<%
+  require 'java'
+  java_import com.ning.atlas.spi.Identity
+
+  space = $deployment.space
+  db_id =  Identity.valueOf(space.get("wordpress-db").value)
+  
+  db = {
+    name:     space.get(db_id, 'name').value,
+    username: space.get(db_id, 'username').value,
+    password: space.get(db_id, 'password').value,
+    host:     space.get(db_id, 'host').value
+  }
+%>
+
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', '<%= db['name'] %>');
+define('DB_NAME', '<%= db[:name] %>');
 
 /** MySQL database username */
-define('DB_USER', '<%= db['username']%>');
+define('DB_USER', '<%= db[:username]%>');
 
 /** MySQL database password */
-define('DB_PASSWORD', '<%= db['password']%>');
+define('DB_PASSWORD', '<%= db[:password]%>');
 
 /** MySQL hostname */
-define('DB_HOST', '<% db['host'] %>');
+define('DB_HOST', '<% db[:host] %>');
 
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8');

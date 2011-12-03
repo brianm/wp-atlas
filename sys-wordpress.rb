@@ -10,7 +10,7 @@ system "wordpress" do
 
   server "database", {
     base: "mysql",
-    install: "mysql-connection-data:wordpress-db"
+    install: "scratch:wordpress-db=@"
   }
 end
 
