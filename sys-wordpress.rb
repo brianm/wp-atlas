@@ -9,7 +9,7 @@ system "blog" do
   }
 
   server "database", {
-    base: "mysql",
+    base: "mysql:blog",
     install: "scratch:wordpress-db=@"
   }
 end

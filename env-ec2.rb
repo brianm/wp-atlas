@@ -24,8 +24,8 @@ environment "ec2" do
 
   base "mysql", {
     provisioner: [ "rds", {
-                     :name => 'template1',
-                     :storage_size => 5,
+                     :name => '{base.fragment}',
+                     :storage_size => '5',
                      :instance_class => "db.m1.small",
                      :engine => "MySQL",
                      :username => "wp",
