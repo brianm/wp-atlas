@@ -6,7 +6,6 @@ system "blog" do
   server "load-balancer", {
     base: "load-balancer:blog",
     members: "/*/wordpress.*",
-    port: "80"
   }
 
   server "wordpress", {

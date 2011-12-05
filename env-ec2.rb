@@ -10,7 +10,11 @@ environment "ec2" do
   }
 
   base "load-balancer", {
-    provisioner: "elb:{base.fragment}?port={server.port}",
+    provisioner: ["elb:{base.fragment}", {
+                    from_port: 80,
+                    to_port: 80,
+                    protocol: "http"
+                  }]
     init: "elb-add:{base.fragment}?member_query={server.members}"
   }
 
