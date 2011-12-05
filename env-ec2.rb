@@ -1,14 +1,17 @@
 
 natty_useast_i386_ebs = "ami-e358958a"
 
-dir = File.dirname __FILE__
-
 environment "ec2" do
 
   listener "progress-bars"
 
   listener "aws-config", {
     ssh_ubuntu: "ubuntu@default",
+  }
+
+  base "load-balancer", {
+    provisioner: "elb:{base.fragment}?port={server.port}",
+    init: "elb-add:{base.fragment}?member_query={server.members}"
   }
 
   base "server", {
@@ -24,12 +27,12 @@ environment "ec2" do
 
   base "mysql", {
     provisioner: [ "rds", {
-                     :name => '{base.fragment}',
-                     :storage_size => '5',
-                     :instance_class => "db.m1.small",
-                     :engine => "MySQL",
-                     :username => "wp",
-                     :password => "wp"
+                     name: "{base.fragment}",
+                     storage_size: "5",
+                     instance_class: "db.m1.small",
+                     engine: "MySQL",
+                     username: "wp",
+                     password: "wp"
                    }]
   }
 end
