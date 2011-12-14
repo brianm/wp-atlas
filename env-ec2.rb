@@ -9,17 +9,35 @@ environment "ec2" do
     ssh_ubuntu: "ubuntu@default",
   }
 
+  system "env" do
+    service "blog-group", base: "ec2-security-group:blog"
+    service "blog-db-group", base: "rds-security-group:blog-db"
+  end
+
+  base "ec2-security-group", {
+    provisioner: ["ec2-security-group::{base.fragment}", {
+                    ssh_from_outside: "tcp 22 0.0.0.0/0",
+                    ssh_from_default: "tcp 22 default"
+                  }]
+  }
+
+  base "rds-security-group", {
+    provisioner: ["rds-security-group:{base.fragment}", {
+                    allow_blog: "blog" #,
+                    #allow_world: "0.0.0.0/0"
+                  }]
+  }
+
   base "load-balancer", {
     provisioner: ["elb:{base.fragment}", {
-                    from_port: 80,
-                    to_port: 80,
+                    from_port: "{base.params.from}",
+                    to_port: "{base.params.to}",
                     protocol: "http"
                   }],
-    init: "elb-add:{base.fragment}?member_query={server.members}"
   }
 
   base "server", {
-    provisioner: "ec2:#{natty_useast_i386_ebs}?instance_type=m1.small",
+    provisioner: "ec2:#{natty_useast_i386_ebs}?instance_type=m1.small&security_group=blog",
     init: ["exec:sudo apt-get update"]
   }
 
@@ -36,7 +54,9 @@ environment "ec2" do
                      instance_class: "db.m1.small",
                      engine: "MySQL",
                      username: "wp",
-                     password: "wp"
+                     password: "wp",
+                     security_group: "blog-db"
                    }]
   }
+
 end
