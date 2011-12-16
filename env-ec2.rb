@@ -18,7 +18,7 @@ environment "ec2" do
   }
 
   base "server", {
-    provisioner: "ec2:#{natty_useast_i386_ebs}?instance_type=m1.small&security_group=blog",
+    provisioner: "ec2:#{natty_useast_i386_ebs}?instance_type=m1.small",
     init: ["exec:sudo apt-get update"]
   }
 
