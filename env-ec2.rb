@@ -15,9 +15,9 @@ environment "ec2" do
   end
 
   base "ec2-security-group", {
-    provisioner: ["ec2-security-group::{base.fragment}", {
-                    ssh_from_outside: "tcp 22 0.0.0.0/0",
-                    ssh_from_default: "tcp 22 default"
+    provisioner: ["ec2-security-group:{base.fragment}", {
+                    ssh_from_outside:   "tcp 22 0.0.0.0/0",
+                    http_from_anywhere: "tcp 80 0.0.0.0/0"
                   }]
   }
 
@@ -32,7 +32,8 @@ environment "ec2" do
     provisioner: ["elb:{base.fragment}", {
                     from_port: "{base.params.from}",
                     to_port: "{base.params.to}",
-                    protocol: "http"
+                    protocol: "http",
+                    allow_group: "blog" # unimplemented
                   }],
   }
 

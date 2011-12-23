@@ -19,7 +19,13 @@
   java_import com.ning.atlas.spi.Identity
 
   space = $deployment.space
-  db_id =  Identity.valueOf(space.get("wordpress-db").value)
+
+  m_db = space.get("wordpress-db")
+  unless m_db.known
+    raise "no address known for wordpress-db"
+  end      
+
+  db_id =  Identity.valueOf(m_db.value)
   
   db = {
     name:     space.get(db_id, 'name').value,
