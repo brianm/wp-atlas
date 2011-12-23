@@ -33,7 +33,7 @@ environment "ec2" do
                     from_port: "{base.params.from}",
                     to_port: "{base.params.to}",
                     protocol: "http",
-                    allow_group: "blog" # unimplemented
+                    allow_group_blog: "blog"
                   }],
   }
 
