@@ -20,6 +20,7 @@
   space = $deployment.space
   scratch = $deployment.scratch
 
+  #database config
   m_db = scratch.get("wordpress-db")
   unless m_db.known
     raise "no address known for wordpress-db"
@@ -33,7 +34,17 @@
     password: space.get(db_id, 'password').value,
     host:     space.get(db_id, 'host').value
   }
+
+  # memcached config
+  ids = scratch.getAllFor("memcached")
+  memcached_servers = ids.map do |raw_id|
+    id = Identity.valueOf(raw_id)
+    address = "'#{space.get(id, "internal-address").value}'"
+  end.join ","
+
 %>
+
+$memcached_servers = array(<%= memcached_servers %>);
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
