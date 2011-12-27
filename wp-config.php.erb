@@ -28,7 +28,16 @@
     password: space.get(db_id, 'password').value,
     host:     space.get(db_id, 'host').value
   }
+
+  # memcached config
+  ids = scratch.getAllFor("memcached")
+  memcached_servers = ids.map do |id|
+    address = "'#{space.get(id, 'internal-address').value}'"
+  end.join ","
+
 %>
+
+$memcached_servers = array(<%= memcached_servers %>);
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
