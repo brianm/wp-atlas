@@ -15,18 +15,13 @@
  */
 
 <%
-  java_import com.ning.atlas.spi.Identity
-
   space = $deployment.space
   scratch = $deployment.scratch
 
-  m_db = scratch.get("wordpress-db")
-  unless m_db.known
+  db_id = scratch.get("wordpress-db").elsewise do
     raise "no address known for wordpress-db"
-  end      
-
-  db_id =  Identity.valueOf(m_db.value)
-  
+  end
+    
   db = {
     name:     space.get(db_id, 'name').value,
     username: space.get(db_id, 'username').value,
