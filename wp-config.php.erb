@@ -34,7 +34,6 @@
   memcached_servers = ids.map do |id|
     address = "'#{space.get(id, 'internal-address').value}'"
   end.join ","
-
 %>
 
 $memcached_servers = array(<%= memcached_servers %>);
