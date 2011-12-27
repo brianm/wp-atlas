@@ -15,12 +15,12 @@
  */
 
 <%
-  require 'java'
   java_import com.ning.atlas.spi.Identity
 
   space = $deployment.space
+  scratch = $deployment.scratch
 
-  m_db = space.get("wordpress-db")
+  m_db = scratch.get("wordpress-db")
   unless m_db.known
     raise "no address known for wordpress-db"
   end      
