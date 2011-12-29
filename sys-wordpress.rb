@@ -11,7 +11,8 @@ system "blog" do
   server "wordpress", {
     cardinality: 2,
     base: "apache-server",
-    install: ["tgz:#{wp_url}?to=/var/www/&skiproot=wordpress",
+    install: ["exec: sudo rm -rf /var/www/*",
+              "tgz:#{wp_url}?to=/var/www/&skiproot=wordpress",
               "zip:#{mcp_url}?to=/var/www/wp-content/&skiproot=memcached",
               "exec: yes | sudo pecl install memcache",
               "exec: sudo echo 'extension=memcache.so' >> /etc/php5/apache2/php.ini",
