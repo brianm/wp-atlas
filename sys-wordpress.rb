@@ -1,7 +1,4 @@
 
-wp_url = "http://wordpress.org/wordpress-3.2.1.tar.gz"
-mcp_url = "http://downloads.wordpress.org/plugin/memcached.2.0.1.zip"
-
 system "blog" do
   
   server "load-balancer", {
@@ -10,30 +7,19 @@ system "blog" do
 
   server "wordpress", {
     cardinality: 2,
-    base: "apache-server",
-    install: ["exec: sudo rm -rf /var/www/*",
-              "tgz:#{wp_url}?to=/var/www/&skiproot=wordpress",
-              "zip:#{mcp_url}?to=/var/www/wp-content/&skiproot=memcached",
-              "exec: yes | sudo pecl install memcache",
-              "exec: sudo echo 'extension=memcache.so' >> /etc/php5/apache2/php.ini",
-              "wait-for:wordpress-db",
-              "erb: wp-config.php.erb > /var/www/wp-config.php",            
-              "exec: sudo service apache2 restart",
-              "elb-add:blog"]
+    base: "server",
+    install: ["wordpress:3.2.1?db=wpdb&cache=wp-cache", 
+              "lb-add:blog"]
   }
 
   server "memcached", {
     cardinality: 2,
     base: "server",
-    install: ["scratch:memcached=@", 
-              "apt:memcached",
-              "file:memcached.conf > /etc/memcached.conf",
-              "exec: sudo service memcached restart"]
+    install: ["memcached:wp-cache"]
   }
 
   server "database", {
-    base: "mysql:blog",
-    install: "scratch:wordpress-db=@"
+    base: "mysql:wpdb"
   }
 end
 

@@ -18,7 +18,7 @@
   space = $deployment.space
   scratch = $deployment.scratch
 
-  db_id = scratch.get("wordpress-db").elsewise do
+  db_id = scratch.get($uri.params["db"]).elsewise do
     raise "no address known for wordpress-db"
   end
     
@@ -30,7 +30,7 @@
   }
 
   # memcached config
-  ids = scratch.getAllFor("memcached")
+  ids = scratch.getAllFor($uri.params["cache"])
   memcached_servers = ids.map do |id|
     address = "'#{space.get(id, 'internal-address').value}'"
   end.join ","
