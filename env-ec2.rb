@@ -66,7 +66,7 @@ environment "ec2" do
                       "tgz:#{wp_url}?to=/var/www/&skiproot=wordpress",
                       "zip:#{mcp_url}?to=/var/www/wp-content/&skiproot=memcached",
                       "exec: yes | sudo pecl install memcache",
-                      "exec: sudo sh -c \"echo 'extension=memcache.so' >> /etc/php5/apache2/php.ini'\"",
+                      "exec: sudo sh -c \"echo 'extension=memcache.so' >> /etc/php5/apache2/php.ini\"",
                       "wait-for:{virtual.params.db}",
                       "erb: wp-config.php.erb > /var/www/wp-config.php?db={virtual.params.db}&cache={virtual.params.cache}",
                       "exec: sudo service apache2 restart"]
