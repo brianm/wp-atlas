@@ -3,7 +3,7 @@ natty_useast_i386_ebs = "ami-e358958a"
 wp_url = "http://wordpress.org/wordpress-3.2.1.tar.gz"
 mcp_url = "http://downloads.wordpress.org/plugin/memcached.2.0.1.zip"
 
-environment "ec2" do
+environment "dev" do
 
   listener "progress-bars"
   listener "aws-config", ssh_ubuntu: "ubuntu@default"

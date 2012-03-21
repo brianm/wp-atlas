@@ -12,7 +12,7 @@ end
 
 desc "start firing up ning in debug-and-wait-mode"
 task :debug do
-  sh "java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -jar ./atlas update"
+  sh "java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005 -jar ./atlas converge"
 end
 
 desc "kill all ec2 instances"
